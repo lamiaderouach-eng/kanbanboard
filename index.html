@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kanban Board · Tareas pendientes</title>
+  <meta name="description" content="Tablero Kanban para gestionar tareas pendientes. Arrastra, edita y filtra. Se guarda en tu navegador.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="13" rx="1.5"/></svg>
+      </span>
+      <div>
+        <h1>Kanban Board</h1>
+        <p class="sub" id="summary">0 tareas</p>
+      </div>
+    </div>
+
+    <div class="tools">
+      <label class="search">
+        <span class="sr-only">Buscar tareas</span>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" placeholder="Buscar tareas…" autocomplete="off">
+      </label>
+      <label class="select">
+        <span class="sr-only">Filtrar por prioridad</span>
+        <select id="filter-priority">
+          <option value="">Todas las prioridades</option>
+          <option value="high">Alta</option>
+          <option value="medium">Media</option>
+          <option value="low">Baja</option>
+        </select>
+      </label>
+      <button id="theme" class="icon-btn" type="button" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <button id="new-task" class="btn primary" type="button">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        Nueva tarea
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="progress" aria-label="Progreso general">
+      <div class="progress-text"><strong id="pct">0%</strong> completado</div>
+      <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="bar"><span id="bar-fill"></span></div>
+    </section>
+
+    <div class="board" id="board"></div>
+  </main>
+
+  <!-- Diálogo crear / editar -->
+  <dialog id="dialog" aria-labelledby="dlg-title">
+    <form id="form" method="dialog" novalidate>
+      <h2 id="dlg-title">Nueva tarea</h2>
+
+      <label class="field">
+        <span>Título <em>*</em></span>
+        <input id="f-title" name="title" type="text" maxlength="90" required placeholder="¿Qué hay que hacer?">
+        <small class="err" id="f-err" hidden>El título es obligatorio.</small>
+      </label>
+
+      <label class="field">
+        <span>Descripción</span>
+        <textarea id="f-desc" name="desc" rows="3" maxlength="400" placeholder="Detalles opcionales…"></textarea>
+      </label>
+
+      <div class="row">
+        <label class="field">
+          <span>Prioridad</span>
+          <select id="f-priority">
+            <option value="low">Baja</option>
+            <option value="medium" selected>Media</option>
+            <option value="high">Alta</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>Columna</span>
+          <select id="f-col"></select>
+        </label>
+      </div>
+
+      <div class="row">
+        <label class="field">
+          <span>Fecha límite</span>
+          <input id="f-due" type="date">
+        </label>
+        <label class="field">
+          <span>Etiqueta</span>
+          <input id="f-tag" type="text" maxlength="20" placeholder="p. ej. Diseño">
+        </label>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn danger" id="f-delete" hidden>Eliminar</button>
+        <span class="spacer"></span>
+        <button type="button" class="btn" id="f-cancel">Cancelar</button>
+        <button type="submit" class="btn primary" id="f-save">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
